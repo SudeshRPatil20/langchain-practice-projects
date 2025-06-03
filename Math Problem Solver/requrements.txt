@@ -26,3 +26,4 @@ youtube_transcript_api
 unstructured
 pytube
 numexpr
+langchain_groq
