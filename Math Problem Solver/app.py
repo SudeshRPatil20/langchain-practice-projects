@@ -10,12 +10,12 @@ from langchain.callbacks import StreamlitCallbackHandler
 ## Set up the api for the stremlit
 st.set_page_config(page_title="Text to Math Problem Solver And Data Search Assistant", page_icon="🦜️")
 st.title("Text To Math Problem Solver Using Google Gemma")
-st.secrets["HF_TOKEN"]
-st.secrets["GROQ_TESTING_API"]
-st.secrets["GOOGLE_API_KEY"]
-st.secrets["LANGCHAIN_API_KEY"]
-st.secrets["LANGCHAIN_PROJECT"]
-st.secrets["HF_TOKEN2"]
+# st.secrets["HF_TOKEN"]
+# st.secrets["GROQ_TESTING_API"]
+# st.secrets["GOOGLE_API_KEY"]
+# st.secrets["LANGCHAIN_API_KEY"]
+# st.secrets["LANGCHAIN_PROJECT"]
+# st.secrets["HF_TOKEN2"]
 
 groq_api_key=st.sidebar.text_input(label="Groq Api Key", type="password")
 
