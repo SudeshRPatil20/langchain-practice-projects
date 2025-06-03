@@ -15,7 +15,7 @@ This repository features multiple projects focused on building language model-po
 - Math problem solvers using LLMs --- https://langchain-practice-projects-zkkzyt5rptja3x9kvfpgm5.streamlit.app/
 - RAG (Retrieval Augmented Generation) systems
 - Text summarization from YouTube and URLs
-- Search engines integrated with agents and tools
+- Search engines integrated with agents and tools --- https://langchain-practice-projects-x9gytybk4zm7jc9wg4b4ww.streamlit.app/
 
 Each project demonstrates different use-cases and integrations of Langchain and related APIs to help you learn and build your own intelligent apps.
 
