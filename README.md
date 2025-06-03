@@ -14,7 +14,7 @@ This repository features multiple projects focused on building language model-po
 - Chatbots using Langchain framework
 - Math problem solvers using LLMs --- https://langchain-practice-projects-zkkzyt5rptja3x9kvfpgm5.streamlit.app/
 - RAG (Retrieval Augmented Generation) systems ---- https://langchain-practice-projects-g49bsgbyl8jxcnezdfbwk8.streamlit.app/
-- Text summarization from YouTube and URLs
+- Text summarization from YouTube and URLs --- https://langchain-basic-project-4uq33mwh6xbgaogjcnbgeu.streamlit.app/
 - Search engines integrated with agents and tools --- https://langchain-practice-projects-x9gytybk4zm7jc9wg4b4ww.streamlit.app/
 
 Each project demonstrates different use-cases and integrations of Langchain and related APIs to help you learn and build your own intelligent apps.
