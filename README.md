@@ -9,13 +9,13 @@ Welcome to the **Langchain Basic Projects** repository! This repo contains vario
 
 This repository features multiple projects focused on building language model-powered applications such as:
 
-- Chat with SQL databases
-- End-to-end Question & Answer systems
-- Chatbots using Langchain framework
+- Chat with SQL databases ---- https://langchain-practice-projects-ksupfxqdvg8clwoav7inq4.streamlit.app/
+- End-to-end Question & Answer systems --https://langchain-practice-projects-x9gytybk4zm7jc9wg4b4ww.streamlit.app/
 - Math problem solvers using LLMs --- https://langchain-practice-projects-zkkzyt5rptja3x9kvfpgm5.streamlit.app/
 - RAG (Retrieval Augmented Generation) systems ---- https://langchain-practice-projects-g49bsgbyl8jxcnezdfbwk8.streamlit.app/
 - Text summarization from YouTube and URLs --- https://langchain-basic-project-4uq33mwh6xbgaogjcnbgeu.streamlit.app/
 - Search engines integrated with agents and tools --- https://langchain-practice-projects-x9gytybk4zm7jc9wg4b4ww.streamlit.app/
+- - Chatbots using Langchain framework-- https://langchain-practice-projects-w8gw8l7dzfwxwzxmjifna4.streamlit.app/
 
 Each project demonstrates different use-cases and integrations of Langchain and related APIs to help you learn and build your own intelligent apps.
 
