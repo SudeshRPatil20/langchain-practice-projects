@@ -2,17 +2,14 @@ ipykernel
 langchain
 python-dotenv
 langchain-google-genai
-langchain_google_genai
-beautifulsoup4
 langchain_community
 faiss-cpu
 fastapi
 streamlit
 uvicorn
 transformers
-bs4
+beautifulsoup4
 google-generativeai
-langchain-google-genai
 langchain-groq
 langchain-chroma
 arxiv
@@ -26,6 +23,3 @@ youtube_transcript_api
 unstructured
 pytube
 numexpr
-langchain_huggingface
-huggingface_hub
-langchain_groq
