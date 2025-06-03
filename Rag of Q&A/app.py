@@ -14,6 +14,8 @@ load_dotenv()
 
 #for loading the the file content or api we use
 import os
+st.secrets["GROQ_TESTING_API"]=="GROQ_TESTING_API"
+
 os.environ['GROQ_TESTING_API']=os.getenv('GROQ_TESTING_API')
 groq_api_key=os.getenv('GROQ_TESTING_API')
 
