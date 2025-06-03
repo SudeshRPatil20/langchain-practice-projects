@@ -17,6 +17,13 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain.chains.llm import LLMChain
 from langchain.chains.retrieval import create_retrieval_chain
 
+st.secrets["GROQ_TESTING_API"]="GROQ_TESTING_API"
+st.secrets["GOOGLE_API_KEY"]="GOOGLE_API_KEY"
+st.secrets["LANGCHAIN_API_KEY"]="LANGCHAIN_API_KEY"
+st.secrets["HF_TOKEN"]="HF_TOKEN"
+st.secrets["HF_TOKEN2"]="HF_TOKEN2"
+
+
 load_dotenv()
 
 os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN")
