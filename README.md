@@ -11,6 +11,7 @@ This repository features multiple projects focused on building language model-po
 
 - Chat with SQL databases ---- https://langchain-practice-projects-ksupfxqdvg8clwoav7inq4.streamlit.app/
 - End-to-end Question & Answer systems --https://langchain-practice-projects-x9gytybk4zm7jc9wg4b4ww.streamlit.app/
+- Q & A by openai-- https://langchain-practice-projects-dbnchjmcv8raplx2jpvp64.streamlit.app/
 - Math problem solvers using LLMs --- https://langchain-practice-projects-zkkzyt5rptja3x9kvfpgm5.streamlit.app/
 - RAG (Retrieval Augmented Generation) systems ---- https://langchain-practice-projects-g49bsgbyl8jxcnezdfbwk8.streamlit.app/
 - Text summarization from YouTube and URLs --- https://langchain-basic-project-4uq33mwh6xbgaogjcnbgeu.streamlit.app/
