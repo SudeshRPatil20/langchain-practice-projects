@@ -24,3 +24,5 @@ unstructured
 pytube
 numexpr
 duckduckgo-search
+langchain-openai
+openai
