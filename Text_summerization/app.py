@@ -34,7 +34,8 @@ if not groq_api_key:
     st.stop()
 
 # LLM initialization
-llm = ChatGroq(model="gemma2-9b-it", groq_api_key=groq_api_key)
+llm = ChatGroq(model="llama3-8b-8192", groq_api_key=groq_api_key)
+
 
 # Prompt template
 prompt_template = """
@@ -84,3 +85,4 @@ if st.button("Summarize the content from YT or Website"):
 
         except Exception as e:
             st.exception(f"Exception: {e}")
+
