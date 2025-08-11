@@ -3,7 +3,7 @@ from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
 from langchain.chains.summarize import load_summarize_chain
 from langchain_community.document_loaders import YoutubeLoader, UnstructuredURLLoader
-
+from urllib.parse import urlparse, parse_qs
 
 def normalize_youtube_url(url):
     parsed = urlparse(url)
@@ -80,4 +80,5 @@ if st.button("Summerize the content form YT or Website"):
         except Exception as e:
 
             st.exception(f"Exception:{e}")
+
 
