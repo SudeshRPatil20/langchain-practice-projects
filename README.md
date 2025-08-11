@@ -37,6 +37,34 @@ Before running the projects, make sure you have:
 
 We recommend creating a dedicated conda environment for these projects to manage dependencies cleanly.
 
+
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="images/Screenshot%20(715).png" width="350"></td>
+    <td><img src="images/Screenshot%20(717).png" width="350"></td>
+    <td><img src="images/Screenshot%20(719).png" width="350"></td>
+  </tr>
+  <tr>
+    <td><img src="images/Screenshot%20(720).png" width="350"></td>
+    <td><img src="images/Screenshot%20(722).png" width="350"></td>
+    <td><img src="images/Screenshot%20(723).png" width="350"></td>
+  </tr>
+  <tr>
+    <td><img src="images/Screenshot%20(724).png" width="350"></td>
+    <td><img src="images/Screenshot%20(725).png" width="350"></td>
+    <td><img src="images/Screenshot%20(726).png" width="350"></td>
+  </tr>
+  <tr>
+    <td><img src="images/Screenshot%20(727).png" width="350"></td>
+    <td><img src="images/Screenshot%20(728).png" width="350"></td>
+  </tr>
+</table>
+
+## And Many More project just check out the code.
+
+
 ### Steps:
 
 1. **Create a new conda environment with Python 3.10:**
