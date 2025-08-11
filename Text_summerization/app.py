@@ -55,7 +55,7 @@ if not groq_api_key:
 try:
     llm = ChatGroq(
         model="gemma2-9b-it",
-        groq_api_key=groq_api_key,
+        api_key=groq_api_key,
         temperature=0,
         max_tokens=1024
     )
@@ -111,3 +111,4 @@ if st.button("Summarize Content"):
 
         except Exception as e:
             st.error(f"Error: {e}")
+
