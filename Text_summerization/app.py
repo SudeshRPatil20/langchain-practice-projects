@@ -4,6 +4,7 @@ from langchain_groq import ChatGroq
 from langchain.chains.summarize import load_summarize_chain
 from langchain_community.document_loaders import YoutubeLoader, UnstructuredURLLoader
 from urllib.parse import urlparse, parse_qs
+import yt_dlp
 
 def normalize_youtube_url(url):
     parsed = urlparse(url)
@@ -15,6 +16,24 @@ def normalize_youtube_url(url):
         video_id = parsed.path.lstrip("/")
         return f"https://www.youtube.com/watch?v={video_id}"
     return url
+
+def fetch_youtube_transcript(url):
+    """Try YoutubeLoader first, fallback to yt_dlp if transcript fails."""
+    try:
+        loader = YoutubeLoader.from_youtube_url(
+            url,
+            add_video_info=True,
+            language="en",
+            download_audio=False
+        )
+        return loader.load()
+    except Exception:
+        # Fallback to yt_dlp to at least get video description
+        ydl_opts = {"quiet": True, "skip_download": True}
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+            description = info.get("description", "")
+            return [{"page_content": description}]
 
 # Streamlit UI
 st.set_page_config(page_title="Langchain: Summarize Text From YT or Website", page_icon="🦜")
@@ -31,10 +50,10 @@ if not groq_api_key:
     st.error("Please enter your Groq API Key")
     st.stop()
 
-# Safer LLM init
+# LLM init
 try:
     llm = ChatGroq(
-        model="gemma2-9b-it",  # try "mixtral-8x7b-32768" if gemma fails
+        model="gemma2-9b-it",
         groq_api_key=groq_api_key,
         temperature=0,
         max_tokens=1024
@@ -61,19 +80,14 @@ if st.button("Summarize Content"):
                 # Load data
                 if "youtube.com" in generic_url or "youtu.be" in generic_url:
                     yt_url = normalize_youtube_url(generic_url)
-                    loader = YoutubeLoader.from_youtube_url(
-                        yt_url, add_video_info=True, language="en"
-                    )
+                    docs = fetch_youtube_transcript(yt_url)
                 else:
                     loader = UnstructuredURLLoader(
                         urls=[generic_url],
                         ssl_verify=True,
-                        headers={
-                            "User-Agent": "Mozilla/5.0"
-                        }
+                        headers={"User-Agent": "Mozilla/5.0"}
                     )
-
-                docs = loader.load()
+                    docs = loader.load()
 
                 if not docs:
                     st.error("No content could be fetched from the URL.")
