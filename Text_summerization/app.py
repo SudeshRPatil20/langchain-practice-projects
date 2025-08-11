@@ -52,13 +52,14 @@ if st.button("Summerize the content form YT or Website"):
                 if "youtube.com" in generic_url:
                     loader=YoutubeLoader.from_youtube_url(generic_url,add_video_info=True)
                 else:
-                    loader=UnstructuredURLLoader(urls=[generic_url], ssl_verify=False,
+                    loader=UnstructuredURLLoader(urls=[generic_url], ssl_verify=True,
                                                  headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"})
                 docs= loader.load()
                 
                 ## Chain For Summerization
                 chain=load_summarize_chain(llm=llm, chain_type="stuff", prompt=prompt)
-                output_summary=chain.run(docs)
+                output_summary=chain.invoke({"input_documents": docs})
                 
         except Exception as e:
+
             st.exception(f"Exception:{e}")
