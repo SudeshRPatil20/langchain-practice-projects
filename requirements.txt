@@ -27,3 +27,4 @@ duckduckgo-search
 langchain-openai
 openai
 yt_dlp
+langchain-groq
