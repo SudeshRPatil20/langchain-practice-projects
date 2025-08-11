@@ -23,7 +23,7 @@ if not groq_api_key:
     st.info("Please add your Groq Api Key to continue")
     st.stop()
 
-llm=ChatGroq(model="gemma2-9b-it", groq_api_key=groq_api_key)
+llm=ChatGroq(model="gemma2-9b-it", api_key=groq_api_key)
 
 #Insialize the tools
 wekipedia_wrapper=WikipediaAPIWrapper()
@@ -103,4 +103,5 @@ if st.button("find my answer"):
             st.success(response)
     else:
         st.warning("Please enter the question")
+
 
