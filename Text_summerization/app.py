@@ -89,9 +89,19 @@ if st.button("Summarize Content"):
                     )
                     docs = loader.load()
 
-                if not docs:
+                docs_raw = loader.load()
+
+                if not docs_raw:
                     st.error("No content could be fetched from the URL.")
                     st.stop()
+
+                # Convert to Document objects if needed
+                docs = []
+                for item in docs_raw:
+                    if isinstance(item, dict):
+                        docs.append(Document(page_content=item.get("text", ""), metadata=item))
+                    else:
+                        docs.append(item)
 
                 # Summarization
                 chain = load_summarize_chain(llm=llm, chain_type="stuff", prompt=prompt)
@@ -102,3 +112,4 @@ if st.button("Summarize Content"):
 
         except Exception as e:
             st.error(f"Error: {e}")
+
