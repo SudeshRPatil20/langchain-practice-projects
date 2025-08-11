@@ -34,7 +34,7 @@ def fetch_youtube_transcript(url):
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
             description = info.get("description", "")
-            return [{"page_content": description}]
+            return [Document(page_content=description, metadata={"title": info.get("title", "")})]
 
 # Streamlit UI
 st.set_page_config(page_title="Langchain: Summarize Text From YT or Website", page_icon="🦜")
@@ -78,30 +78,27 @@ if st.button("Summarize Content"):
     else:
         try:
             with st.spinner("Fetching and summarizing..."):
-                # Load data
                 if "youtube.com" in generic_url or "youtu.be" in generic_url:
                     yt_url = normalize_youtube_url(generic_url)
-                    docs = fetch_youtube_transcript(yt_url)
+                    docs_raw = fetch_youtube_transcript(yt_url)
                 else:
                     loader = UnstructuredURLLoader(
                         urls=[generic_url],
                         ssl_verify=True,
                         headers={"User-Agent": "Mozilla/5.0"}
                     )
-                    docs = loader.load()
-
-                
+                    docs_raw = loader.load()
 
                 if not docs_raw:
                     st.error("No content could be fetched from the URL.")
                     st.stop()
 
-                # Convert to Document objects if needed
+                # Ensure everything is a Document object
                 docs = []
                 for item in docs_raw:
                     if isinstance(item, dict):
                         text = item.get("text") or item.get("page_content") or ""
-                        docs.append(Document(page_content=item.get("text", ""), metadata=item))
+                        docs.append(Document(page_content=text, metadata=item))
                     else:
                         docs.append(item)
 
@@ -114,6 +111,3 @@ if st.button("Summarize Content"):
 
         except Exception as e:
             st.error(f"Error: {e}")
-
-
-
