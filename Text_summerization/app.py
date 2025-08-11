@@ -76,9 +76,17 @@ if st.button("Summerize the content form YT or Website"):
                 ## Chain For Summerization
                 chain=load_summarize_chain(llm=llm, chain_type="stuff", prompt=prompt)
                 output_summary=chain.invoke({"input_documents": docs})
+                # Display result
+                summary_text = output_summary.get("output_text", "").strip()
+                if summary_text:
+                    st.subheader("Summary:")
+                    st.write(summary_text)
+                else:
+                    st.warning("No summary was generated.")
                 
         except Exception as e:
 
             st.exception(f"Exception:{e}")
+
 
 
