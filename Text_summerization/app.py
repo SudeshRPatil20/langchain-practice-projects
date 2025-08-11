@@ -4,6 +4,7 @@ from langchain_groq import ChatGroq
 from langchain.chains.summarize import load_summarize_chain
 from langchain_community.document_loaders import YoutubeLoader, UnstructuredURLLoader
 from urllib.parse import urlparse, parse_qs
+from langchain.schema import Document
 import yt_dlp
 
 def normalize_youtube_url(url):
@@ -112,4 +113,5 @@ if st.button("Summarize Content"):
 
         except Exception as e:
             st.error(f"Error: {e}")
+
 
