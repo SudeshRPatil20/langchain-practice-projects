@@ -90,7 +90,7 @@ if st.button("Summarize Content"):
                     )
                     docs = loader.load()
 
-                docs_raw = loader.load()
+                
 
                 if not docs_raw:
                     st.error("No content could be fetched from the URL.")
@@ -100,6 +100,7 @@ if st.button("Summarize Content"):
                 docs = []
                 for item in docs_raw:
                     if isinstance(item, dict):
+                        text = item.get("text") or item.get("page_content") or ""
                         docs.append(Document(page_content=item.get("text", ""), metadata=item))
                     else:
                         docs.append(item)
@@ -113,5 +114,6 @@ if st.button("Summarize Content"):
 
         except Exception as e:
             st.error(f"Error: {e}")
+
 
 
