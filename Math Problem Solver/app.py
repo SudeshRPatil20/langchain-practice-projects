@@ -1,104 +1,106 @@
-import os
-import re
-import time
-import streamlit as st
-import google.generativeai as genai
-from datetime import datetime
-import unicodedata
-import hashlib
+import streamlit as st 
+from langchain_groq import ChatGroq
+from langchain.chains import LLMMathChain, LLMChain
+from langchain.prompts import PromptTemplate
+from langchain_community.utilities import WikipediaAPIWrapper
+from langchain.agents.agent_types import AgentType
+from langchain.agents import Tool, initialize_agent
+from langchain.callbacks import StreamlitCallbackHandler
 
-def slugify(text: str) -> str:
-    text = unicodedata.normalize("NFKD", text)
-    text = text.encode("ascii", "ignore").decode("ascii")
-    text = re.sub(r"[^\w\s-]", "", text).strip().lower()
-    text = re.sub(r"[-\s]+", "-", text)
-    return text if text else hashlib.sha1(text.encode("utf-8")).hexdigest()[:8]
+## Set up the api for the stremlit
+st.set_page_config(page_title="Text to Math Problem Solver And Data Search Assistant", page_icon="🦜️")
+st.title("Text To Math Problem Solver Using Google Gemma")
+# st.secrets["HF_TOKEN"]
+# st.secrets["GROQ_TESTING_API"]
+# st.secrets["GOOGLE_API_KEY"]
+# st.secrets["LANGCHAIN_API_KEY"]
+# st.secrets["LANGCHAIN_PROJECT"]
+# st.secrets["HF_TOKEN2"]
 
+groq_api_key=st.sidebar.text_input(label="Groq Api Key", type="password")
 
-def prompt_template(title, details):
-    return f"""
-Write a full high-quality blog article titled: "{title}"
+if not groq_api_key:
+    st.info("Please add your Groq Api Key to continue")
+    st.stop()
 
-Requirements:
-- Tone: professional but friendly
-- Start with a short summary
-- Add multiple sections with headings
-- Use code examples where useful
-- End with a conclusion and optional extra resources
-- Insert bullet points where helpful
-- If details provided: {details}
+llm=ChatGroq(model="gemma2-9b-it", api_key=groq_api_key)
 
-Format output in Markdown starting with:
-# {title}
+#Insialize the tools
+wekipedia_wrapper=WikipediaAPIWrapper()
+wekipedia_tool=Tool(
+    name="Wikipedia",
+    func=wekipedia_wrapper.run,
+    description="A tool for searching the Internet to find the various information on the topic mentioned"
+)
+
+##Initialize the Math tool
+math_chain=LLMMathChain.from_llm(llm=llm)
+calculator=Tool(
+    name="Calculator",
+    func=math_chain.run,
+    description="A tool for answering related question only for math problems and expresions."
+)
+
+prompt="""
+Your a agen tasked for solving users mathemtical question. Logically arrived at the solution and provide a detailed explanation
+and display it point wise for question below
+Question:{question}
+Answer:
 """
 
+prompt_template=PromptTemplate(
+    input_variables=["question"],
+    template=prompt
+)
 
-def call_gemini(api_key, prompt, model_name="gemini-flash-latest"):
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel(model_name)
-    response = model.generate_content(prompt)
-    return response.text
+## Combine all tools into chain
+chain=LLMChain(llm=llm, prompt=prompt_template)
 
+reasing_tool=Tool(
+    name="Reasoning tool",
+    func=chain.run,
+    description="A tool for answering a logic-based and reasoning questions."
+)
 
-st.set_page_config(page_title="AI Blog Generator", layout="centered")
-st.title("📝 AI Blog Article Generator (Google Gemini API)")
-st.write("Enter article titles below (one per line). Optionally add: `Title | notes`")
+## Initialize the agent
 
-api_key = st.text_input("Enter Google Gemini API Key:", type="password")
+assistant_agent=initialize_agent(
+    tools=[wekipedia_tool, calculator, reasing_tool],
+    llm=llm,
+    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+    verbose=False,
+    handle_parsing_errors=True
+)
 
-titles_input = st.text_area("Titles", height=250, value=
-"""Building REST APIs with FastAPI | include examples
-Understanding Transformers in Deep Learning | diagrams + easy explanation
-Optimizing SQL Queries | explain indexes and EXPLAIN plan
-""")
+if "messages" not in st.session_state:
+    st.session_state["messages"]=[
+        {"role":"assistant","content":"Hi, I'm a Math chatbot who can answer all your maths Problems"}
+    ]
+    
+for msg in st.session_state.messages:
+    st.chat_message(msg["role"]).write(msg['content'])
+    
+## function to generate the response
+# the below function is use if you are creating large project which contains frontend and backend both
+# def generate_response(question):
+#     response=assistant_agent.invoke({'input':question})
+#     return response
 
-temperature = st.slider("Creativity (temperature)", 0.0, 1.0, 0.3, 0.05)
+## lets start the interaction
+question=st.text_area("Enter your Question")
 
-generate = st.button("Generate Articles 🚀")
-
-
-def parse_titles(text):
-    lines = [l.strip() for l in text.split("\n") if l.strip()]
-    parsed = []
-    for line in lines:
-        if "|" in line:
-            t, d = map(str.strip, line.split("|", 1))
-        else:
-            t, d = line, ""
-        parsed.append((t, d))
-    return parsed
-
-
-if generate:
-    if not api_key:
-        st.error("Please enter your Gemini API Key.")
+if st.button("find my answer"):
+    if question:
+        with st.spinner("Generate response...."):
+            st.session_state.messages.append({"role":"user", "content":question})
+            st.chat_message("user").write(question)
+            
+            st_cb=StreamlitCallbackHandler(st.container(), expand_new_thoughts=False)
+            response=assistant_agent.run(st.session_state.messages, callbacks=[st_cb])
+            
+            st.session_state.messages.append({'role':'assistant', "content":response})
+            st.write('### Response:')
+            st.success(response)
     else:
-        titles = parse_titles(titles_input)
-        progress = st.progress(0)
+        st.warning("Please enter the question")
 
-        for i, (title, details) in enumerate(titles, start=1):
-            st.write(f"✍️ Generating: **{title}** ...")
-            try:
-                prompt = prompt_template(title, details)
-                output = call_gemini(api_key, prompt)
-
-                slug = slugify(title)
-                filename = f"{slug}.md"
-
-                st.success(f"✅ **Generated:** {title}")
-                st.code(output, language="markdown")
-
-                st.download_button(
-                    label=f"⬇️ Download {title}",
-                    data=output,
-                    file_name=filename,
-                    mime="text/markdown"
-                )
-
-            except Exception as e:
-                st.error(f"❌ Failed for {title}: {e}")
-
-            progress.progress(i / len(titles))
-            time.sleep(0.2)
-
-        st.success("🎯 All Articles Generated!")
