@@ -50,7 +50,7 @@ def save_markdown(title, body):
     return path
 
 
-def call_gemini(api_key, prompt, model_name="gemini-1.5-flash"):
+def call_gemini(api_key, prompt, model_name="gemini-flash-latest"):
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel(model_name)
     response = model.generate_content(prompt)
@@ -117,3 +117,4 @@ st.header("📂 Existing Blog Files")
 files = sorted(BLOG_DIR.glob("*.md"))
 for f in files:
     st.write("-", f.name)
+
